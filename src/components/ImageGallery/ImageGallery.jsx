@@ -2,13 +2,15 @@ import { Component } from "react";
 import { getImg } from '../API/api';
 import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
 import { Button } from '../Button/Button'; 
+import { Modal } from "components/Modal/Modal";
 
 export class ImageGallery extends Component{
     state = {
         img: [],
         isLoading: false,
-        page: 1,
+        isModal: false,
         button: false,
+        page: 1,
     }
 
     onLoadMore = () => {
@@ -43,9 +45,7 @@ export class ImageGallery extends Component{
     }
 
     render(){
-        const { img } = this.state;
-        const { isLoading } = this.state;
-        const { button } = this.state;
+        const { img, isLoading, button, isModal } = this.state;
 
         return(
             <>
@@ -57,6 +57,7 @@ export class ImageGallery extends Component{
                 <ul className="gallery">
                     {img && (<ImageGalleryItem img={img}/>)}
                     {button && (<Button onClick={this.onLoadMore}/>)}
+                    {isModal && (<Modal />)}
                 </ul>
            </>
         )
