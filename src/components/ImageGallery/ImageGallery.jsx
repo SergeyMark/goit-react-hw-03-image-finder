@@ -2,6 +2,7 @@ import { Component } from "react";
 import { getImg } from '../API/api';
 import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
 import { Button } from '../Button/Button'; 
+import { Modal } from "components/Modal/Modal";
 
 export class ImageGallery extends Component{
     state = {
@@ -10,6 +11,7 @@ export class ImageGallery extends Component{
         isModal: false,
         button: false,
         page: 1,
+        urlLarge: '',
     }
 
     onLoadMore = () => {
@@ -61,9 +63,10 @@ export class ImageGallery extends Component{
                     </div>
                 )}
                 <ul className="gallery">
-                    {img && (<ImageGalleryItem img={img}/>)}
+                    {img && (<ImageGalleryItem img={img} onClick={this.showModal}/>)}
                     {button && (<Button onClick={this.onLoadMore}/>)}
                 </ul>
+                {this.showModal && (<Modal closeModal={this.closeModal}/>)}
            </>
         )
     }
