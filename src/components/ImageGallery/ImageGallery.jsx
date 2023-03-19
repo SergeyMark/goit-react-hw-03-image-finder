@@ -2,7 +2,6 @@ import { Component } from "react";
 import { getImg } from '../API/api';
 import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
 import { Button } from '../Button/Button'; 
-import { Modal } from "components/Modal/Modal";
 
 export class ImageGallery extends Component{
     state = {
@@ -19,6 +18,14 @@ export class ImageGallery extends Component{
         }))
     }
 
+    showModal = () =>{
+        this.setState({isModal: true})
+    }
+
+    closeModal = () =>{
+        this.setState({isModal: false})
+    }
+
     componentDidUpdate(prevProps, prevState){
         if (prevProps.searchText !== this.props.searchText || 
             this.state.page !== prevState.page) {
@@ -32,7 +39,6 @@ export class ImageGallery extends Component{
                 }
                 return resp.json();
             }).then(dataImg => {
-                // this.setState({img: dataImg.hits})
                 this.setState(prevState => ({
                     img: [...prevState.img, ...dataImg.hits],
                     button: true,
@@ -45,7 +51,7 @@ export class ImageGallery extends Component{
     }
 
     render(){
-        const { img, isLoading, button, isModal } = this.state;
+        const { img, isLoading, button } = this.state;
 
         return(
             <>
@@ -57,7 +63,6 @@ export class ImageGallery extends Component{
                 <ul className="gallery">
                     {img && (<ImageGalleryItem img={img}/>)}
                     {button && (<Button onClick={this.onLoadMore}/>)}
-                    {isModal && (<Modal />)}
                 </ul>
            </>
         )
