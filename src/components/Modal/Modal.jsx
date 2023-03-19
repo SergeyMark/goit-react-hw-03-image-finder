@@ -21,7 +21,6 @@ export class Modal extends Component{
             
             <div className="overlay">
                 <div className="modal">
-                    PIZDEC
                     <img src={urlLarge} alt={tags} onClick={closeModal}/>
                 </div>
             </div>
