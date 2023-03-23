@@ -34,6 +34,7 @@ export class App extends Component {
       const fetchResponse = FetchApi(searchQuery, page);
       fetchResponse
         .then(resp => {
+          console.log(resp)
           if (resp.data.hits.length === 0) {
             this.setState({ loading: false });
             Notify.warning('Oops! Find better)');
@@ -44,6 +45,10 @@ export class App extends Component {
             imageCards: [...this.state.imageCards, ...resp.data.hits],
             totalHits: resp.data.totalHits,
           }));
+
+          if (resp.data.total === 0) {
+            Notify.warning('Sorry, there are no images matching your search query. Please try again.');
+          }
         })
         .catch(error => {
           console.log(error);
@@ -56,7 +61,7 @@ export class App extends Component {
 
   onSubmit = inputValue => {
     if (this.state.searchQuery !== inputValue) {
-      this.setState({ searchQuery: inputValue, imageCards: [] });
+      this.setState({ searchQuery: inputValue, imageCards: [], page: 1 });
     }
   };
 
@@ -79,7 +84,7 @@ export class App extends Component {
   };
 
   render() {
-    const { imageCards, loading, totalHits, showModal, selectedImgCard } =
+    const { imageCards, loading, totalHits, showModal, selectedImgCard, page } =
       this.state;
 
     return (
@@ -96,7 +101,9 @@ export class App extends Component {
 
         {loading && <Loader />}
 
-        {totalHits > 12 && <Button onClick={this.onLoadBtnClick} />}
+        {(page * 12 <= totalHits) && <Button onClick={this.onLoadBtnClick} />}
+
+        {/* {totalHits > 12 && <Button onClick={this.onLoadBtnClick} />} */}
       </div>
     );
   }
